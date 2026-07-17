@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <!-- ĐOẠN CODE SOÁT VÉ BẢO MẬT CHỐNG TRUY CẬP TRỰC TIẾP -->
+    <script>
+      if (sessionStorage.getItem("da_dang_nhap") !== "true") {
+          window.location.href = "../index.html"; 
+      }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luyện Nghe Chép Chính Tả - Super Dictation</title>
