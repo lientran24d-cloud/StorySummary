@@ -119,13 +119,12 @@
 </div>
 
 <script>
-    // Mã cấu hình API
+    // Khởi tạo Supabase chỉ một lần duy nhất
     const supabaseUrl = 'https://fiurbtdjtmpkdpngewxo.supabase.co'; 
     const supabaseKey = 'sb_publishable_CTsjBRJTt9aOWuvIHx4foQ_SBlxpxJ2';
-    // Đã sửa lại cú pháp khởi tạo Supabase bằng window.supabase
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // KHI TRANG VỪA TẢI: Kiểm tra xem con đã nhập mã trước đó chưa
+    // Kiểm tra "vé vào cửa" khi trang vừa tải
     window.onload = function() {
         if (sessionStorage.getItem("da_dang_nhap") === "true") {
             document.getElementById("login-screen").style.display = "none";
@@ -133,7 +132,7 @@
         }
     };
 
-    // HÀM KIỂM TRA MÃ KHI BẤM NÚT
+    // Hàm kiểm tra mã
     async function kiemTraMa() {
         const inputKey = document.getElementById("passkey").value.toUpperCase().trim();
         const thongBao = document.getElementById("thong-bao");
@@ -169,16 +168,13 @@
                 return;
             }
 
-            // MÃ HỢP LỆ: Đánh dấu đã sử dụng trên máy chủ
             await supabase
                 .from('key_bai_tap')
                 .update({ da_su_dung: true })
                 .eq('ma_key', inputKey);
 
-            // Lưu "vé vào cửa" vào bộ nhớ trình duyệt
             sessionStorage.setItem("da_dang_nhap", "true");
 
-            // Mở bài học
             document.getElementById("login-screen").style.display = "none";
             document.getElementById("main-content").style.display = "block";
         } catch (err) {
@@ -186,5 +182,3 @@
         }
     }
 </script>
-</body>
-</html>
