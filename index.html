@@ -3,182 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Story Summary</title>
-<!-- Thêm thư viện Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<title>Lớp Học Của Cô Linda</title>
 <style>
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #f0f7ff;
-        text-align: center;
-        padding: 40px;
-    }
-
-    h1 { color: #1565c0; margin-bottom: 10px; }
-    p { color: #555; margin-bottom: 30px; }
-
-    /* Màn hình đăng nhập */
-    #login-screen {
-        background: white; max-width: 400px; margin: 40px auto; 
-        padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    #login-screen input {
-        padding: 10px; font-size: 16px; border: 2px solid #3498DB; 
-        border-radius: 8px; width: 80%; margin-bottom: 15px; text-transform: uppercase;
-    }
-    #login-screen button {
-        background-color: #3498DB; border: none; padding: 10px 20px; 
-        font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; color: white;
-    }
-    .error-msg { color: red; font-size: 14px; margin-top: 10px; }
-
-    /* Ẩn nội dung 20 bài học lúc đầu */
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f7ff; text-align: center; padding: 20px; }
+    #login-screen { background: white; max-width: 400px; margin: 40px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    #login-screen input { padding: 12px; font-size: 16px; border: 2px solid #3498DB; border-radius: 8px; width: 80%; margin-bottom: 15px; text-transform: uppercase; text-align: center; font-weight: bold;}
+    #login-screen button { background-color: #3498DB; border: none; padding: 12px 25px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; color: white; transition: 0.3s;}
+    #login-screen button:hover { background-color: #2980B9; }
+    .error-msg { color: #E74C3C; font-size: 15px; margin-top: 15px; font-weight: bold; }
     #main-content { display: none; }
-
-    .container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 15px;
-        max-width: 900px;
-        margin: auto;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-        padding: 20px 10px;
-        border-radius: 15px;
-        font-weight: bold;
-        font-size: 16px;
-        transition: transform 0.2s, filter 0.3s;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    a:hover {
-        transform: scale(1.05);
-        filter: brightness(1.1);
-    }
-
-    /* Bảng màu đa dạng */
-    .u1 { background: #FF6B6B; } .u2 { background: #4ECDC4; }
-    .u3 { background: #45B7D1; } .u4 { background: #96CEB4; }
-    .u5 { background: #FFEEAD; color: #555; } .u6 { background: #D4A5A5; }
-    .u7 { background: #9B59B6; } .u8 { background: #E67E22; }
-    .u9 { background: #2ECC71; } .u10 { background: #3498DB; }
-    .u11 { background: #F1C40F; color: #555; } .u12 { background: #E74C3C; }
-    .u13 { background: #1ABC9C; } .u14 { background: #95A5A6; }
-    .u15 { background: #D35400; } .u16 { background: #8E44AD; }
-    .u17 { background: #27AE60; } .u18 { background: #2980B9; }
-    .u19 { background: #C0392B; } .u20 { background: #7F8C8D; }
+    .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; max-width: 800px; margin: auto; margin-top: 30px;}
+    .unit-btn { background-color: #2ECC71; color: white; padding: 15px 10px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 16px; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
 </style>
 </head>
-
 <body>
 
-<!-- PHẦN 1: MÀN HÌNH ĐĂNG NHẬP -->
+<!-- MÀN HÌNH ĐĂNG NHẬP -->
 <div id="login-screen">
     <h2>Chào mừng các con! 🌟</h2>
-    <p>Nhập mã học tập của con vào đây nhé:</p>
-    <input type="text" id="passkey" placeholder="Nhập mã...">
+    <p>Nhập mã học tập của tháng này vào đây nhé:</p>
+    <input type="text" id="passkey" placeholder="NHẬP MÃ...">
     <br>
     <button onclick="kiemTraMa()">Vào Lớp</button>
     <p id="thong-bao" class="error-msg"></p>
 </div>
 
-<!-- PHẦN 2: NỘI DUNG CHÍNH (Sẽ hiện ra khi có vé vào cửa) -->
+<!-- DANH SÁCH 20 UNIT -->
 <div id="main-content">
+    <h2>📚 Danh Sách Bài Học 📚</h2>
     <div class="container">
-        <div style="grid-column: 1 / -1;">
-            <h1>📚 Story Summary</h1>
-            <p>Chọn bài học con muốn xem:</p>
-        </div>
-
-        <!-- Các đường link đã được chuẩn hóa chữ U hoa -->
-        <a href="Unit1/" class="u1">Unit 1</a>
-        <a href="Unit2/" class="u2">Unit 2</a>
-        <a href="Unit3/" class="u3">Unit 3</a>
-        <a href="Unit4/" class="u4">Unit 4</a>
-        <a href="Unit5/" class="u5">Unit 5</a>
-        <a href="Unit6/" class="u6">Unit 6</a>
-        <a href="Unit7/" class="u7">Unit 7</a>
-        <a href="Unit8/" class="u8">Unit 8</a>
-        <a href="Unit9/" class="u9">Unit 9</a>
-        <a href="Unit10/" class="u10">Unit 10</a>
-        <a href="Unit11/" class="u11">Unit 11</a>
-        <a href="Unit12/" class="u12">Unit 12</a>
-        <a href="Unit13/" class="u13">Unit 13</a>
-        <a href="Unit14/" class="u14">Unit 14</a>
-        <a href="Unit15/" class="u15">Unit 15</a>
-        <a href="Unit16/" class="u16">Unit 16</a>
-        <a href="Unit17/" class="u17">Unit 17</a>
-        <a href="Unit18/" class="u18">Unit 18</a>
-        <a href="Unit19/" class="u19">Unit 19</a>
-        <a href="Unit20/" class="u20">Unit 20</a>
+        <!-- Chú ý: Tên thư mục chữ U viết hoa (Unit1, Unit2...) để tránh lỗi link không mở được -->
+        <a href="Unit1/" class="unit-btn">Unit 1</a>
+        <a href="Unit2/" class="unit-btn">Unit 2</a>
+        <a href="Unit3/" class="unit-btn">Unit 3</a>
+        <a href="Unit4/" class="unit-btn">Unit 4</a>
+        <a href="Unit5/" class="unit-btn">Unit 5</a>
+        <a href="Unit6/" class="unit-btn">Unit 6</a>
+        <a href="Unit7/" class="unit-btn">Unit 7</a>
+        <a href="Unit8/" class="unit-btn">Unit 8</a>
+        <a href="Unit9/" class="unit-btn">Unit 9</a>
+        <a href="Unit10/" class="unit-btn">Unit 10</a>
+        <a href="Unit11/" class="unit-btn">Unit 11</a>
+        <a href="Unit12/" class="unit-btn">Unit 12</a>
+        <a href="Unit13/" class="unit-btn">Unit 13</a>
+        <a href="Unit14/" class="unit-btn">Unit 14</a>
+        <a href="Unit15/" class="unit-btn">Unit 15</a>
+        <a href="Unit16/" class="unit-btn">Unit 16</a>
+        <a href="Unit17/" class="unit-btn">Unit 17</a>
+        <a href="Unit18/" class="unit-btn">Unit 18</a>
+        <a href="Unit19/" class="unit-btn">Unit 19</a>
+        <a href="Unit20/" class="unit-btn">Unit 20</a>
     </div>
 </div>
 
 <script>
-    // Khởi tạo Supabase chỉ một lần duy nhất
-    const supabaseUrl = 'https://fiurbtdjtmpkdpngewxo.supabase.co'; 
-    const supabaseKey = 'sb_publishable_CTsjBRJTt9aOWuvIHx4foQ_SBlxpxJ2';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-    // Kiểm tra "vé vào cửa" khi trang vừa tải
-    window.onload = function() {
-        if (sessionStorage.getItem("da_dang_nhap") === "true") {
-            document.getElementById("login-screen").style.display = "none";
-            document.getElementById("main-content").style.display = "block";
+    // BẢNG MÃ BÍ MẬT THEO NĂM VÀ THÁNG (Cô xem mã ở đây để gửi cho học sinh)
+    const maBiMat = {
+        2026: {
+            7: "KV79", 8: "PM34", 9: "ZT82", 10: "LQ15", 11: "WX44", 12: "JN99"
+        },
+        2027: {
+            1: "BC21", 2: "FG88", 3: "DY56", 4: "HK33", 5: "RS77", 6: "MN12",
+            7: "VW55", 8: "QP89", 9: "TR41", 10: "XC67", 11: "ZB23", 12: "LK98"
         }
     };
 
-    // Hàm kiểm tra mã
-    async function kiemTraMa() {
+    function hienThiLopHoc() {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        
+        // Chức năng chuyển hướng thẳng vào Unit nếu học sinh bấm từ link gửi riêng
+        const linkChoDuyet = sessionStorage.getItem("link_dang_cho");
+        if (linkChoDuyet) {
+            sessionStorage.removeItem("link_dang_cho"); // Xóa trí nhớ
+            window.location.href = linkChoDuyet; // Chuyển thẳng vào bài học
+        }
+    }
+
+    function kiemTraMa() {
         const inputKey = document.getElementById("passkey").value.toUpperCase().trim();
         const thongBao = document.getElementById("thong-bao");
         
-        if(inputKey === "") {
-            thongBao.innerText = "Con chưa nhập mã kìa! 🐾";
-            return;
+        const thoiGian = new Date();
+        const namHienTai = thoiGian.getFullYear();
+        const thangHienTai = thoiGian.getMonth() + 1;
+
+        // Lấy đúng mã của tháng và năm hiện tại
+        let maHopLe = "";
+        if (maBiMat[namHienTai] && maBiMat[namHienTai][thangHienTai]) {
+            maHopLe = maBiMat[namHienTai][thangHienTai];
         }
 
-        thongBao.innerText = "Cô đang kiểm tra mã... ⏳";
-
-        try {
-            const { data, error } = await supabase
-                .from('key_bai_tap')
-                .select('*')
-                .eq('ma_key', inputKey)
-                .single();
-
-            if (error || !data) {
-                thongBao.innerText = "Mã không đúng rồi. Con kiểm tra lại nhé! ❌";
-                return;
-            }
-
-            if (data.da_su_dung === true) {
-                thongBao.innerText = "Mã này đã được sử dụng rồi con nhé! 🔒";
-                return;
-            }
-
-            const homNay = new Date();
-            const hanSuDung = new Date(data.han_su_dung);
-            if (homNay > hanSuDung) {
-                thongBao.innerText = "Mã của con đã hết hạn rồi! ⏰";
-                return;
-            }
-
-            await supabase
-                .from('key_bai_tap')
-                .update({ da_su_dung: true })
-                .eq('ma_key', inputKey);
-
+        if (inputKey === maHopLe) {
             sessionStorage.setItem("da_dang_nhap", "true");
-
-            document.getElementById("login-screen").style.display = "none";
-            document.getElementById("main-content").style.display = "block";
-        } catch (err) {
-            thongBao.innerText = "Có lỗi kết nối, con nhờ bố mẹ kiểm tra lại mạng nhé!";
+            hienThiLopHoc();
+        } else {
+            thongBao.innerText = "Mã của tháng " + thangHienTai + " không đúng rồi con ơi! ❌";
         }
     }
+
+    // Kiểm tra ngay khi tải trang: Nếu đã đăng nhập trước đó thì mở lớp luôn
+    if (sessionStorage.getItem("da_dang_nhap") === "true") {
+        hienThiLopHoc();
+    }
 </script>
+</body>
+</html>
