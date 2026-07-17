@@ -11,9 +11,9 @@
     #login-screen button { background-color: #3498DB; border: none; padding: 12px 25px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; color: white; transition: 0.3s;}
     #login-screen button:hover { background-color: #2980B9; }
     .error-msg { color: #E74C3C; font-size: 15px; margin-top: 15px; font-weight: bold; }
-    #main-content { display: none; }
-    .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; max-width: 800px; margin: auto; margin-top: 30px;}
-    .unit-btn { background-color: #2ECC71; color: white; padding: 15px 10px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 16px; display: block; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    
+    /* Giao diện báo thành công thay cho danh sách 20 Unit */
+    #success-screen { display: none; background: white; max-width: 400px; margin: 40px auto; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 </style>
 </head>
 <body>
@@ -28,36 +28,15 @@
     <p id="thong-bao" class="error-msg"></p>
 </div>
 
-<!-- DANH SÁCH 20 UNIT -->
-<div id="main-content">
-    <h2>📚 Danh Sách Bài Học 📚</h2>
-    <div class="container">
-        <!-- Đã sửa toàn bộ đường link thành chữ u thường để khớp với thư mục -->
-        <a href="unit1/" class="unit-btn">Unit 1</a>
-        <a href="unit2/" class="unit-btn">Unit 2</a>
-        <a href="unit3/" class="unit-btn">Unit 3</a>
-        <a href="unit4/" class="unit-btn">Unit 4</a>
-        <a href="unit5/" class="unit-btn">Unit 5</a>
-        <a href="unit6/" class="unit-btn">Unit 6</a>
-        <a href="unit7/" class="unit-btn">Unit 7</a>
-        <a href="unit8/" class="unit-btn">Unit 8</a>
-        <a href="unit9/" class="unit-btn">Unit 9</a>
-        <a href="unit10/" class="unit-btn">Unit 10</a>
-        <a href="unit11/" class="unit-btn">Unit 11</a>
-        <a href="unit12/" class="unit-btn">Unit 12</a>
-        <a href="unit13/" class="unit-btn">Unit 13</a>
-        <a href="unit14/" class="unit-btn">Unit 14</a>
-        <a href="unit15/" class="unit-btn">Unit 15</a>
-        <a href="unit16/" class="unit-btn">Unit 16</a>
-        <a href="unit17/" class="unit-btn">Unit 17</a>
-        <a href="unit18/" class="unit-btn">Unit 18</a>
-        <a href="unit19/" class="unit-btn">Unit 19</a>
-        <a href="unit20/" class="unit-btn">Unit 20</a>
-    </div>
+<!-- MÀN HÌNH BÁO THÀNH CÔNG -->
+<div id="success-screen">
+    <h2 style="color: #2ECC71;">✅ Đã mở khóa!</h2>
+    <p>Hệ thống đang chuyển con vào bài học...</p>
+    <p style="font-size: 14px; color: #7f8c8d; margin-top: 15px;">(Nếu màn hình không tự chuyển, con hãy quay lại Zalo và bấm lại vào link bài học cô gửi nhé!)</p>
 </div>
 
 <script>
-    // BẢNG MÃ BÍ MẬT THEO NĂM VÀ THÁNG (Cô xem mã ở đây để gửi cho học sinh)
+    // BẢNG MÃ BÍ MẬT (Cô xem mã ở đây để gửi cho học sinh)
     const maBiMat = {
         2026: {
             7: "KV79", 8: "PM34", 9: "ZT82", 10: "LQ15", 11: "WX44", 12: "JN99"
@@ -70,13 +49,13 @@
 
     function hienThiLopHoc() {
         document.getElementById("login-screen").style.display = "none";
-        document.getElementById("main-content").style.display = "block";
+        document.getElementById("success-screen").style.display = "block";
         
-        // Chức năng chuyển hướng thẳng vào Unit nếu học sinh bấm từ link gửi riêng
+        // Chức năng chuyển hướng thẳng vào Unit học sinh vừa bấm
         const linkChoDuyet = sessionStorage.getItem("link_dang_cho");
         if (linkChoDuyet) {
-            sessionStorage.removeItem("link_dang_cho"); // Xóa trí nhớ
-            window.location.href = linkChoDuyet; // Chuyển thẳng vào bài học
+            sessionStorage.removeItem("link_dang_cho"); // Xóa trí nhớ sau khi dùng xong
+            window.location.href = linkChoDuyet; // Tự động phóng thẳng vào bài học!
         }
     }
 
@@ -88,7 +67,6 @@
         const namHienTai = thoiGian.getFullYear();
         const thangHienTai = thoiGian.getMonth() + 1;
 
-        // Lấy đúng mã của tháng và năm hiện tại
         let maHopLe = "";
         if (maBiMat[namHienTai] && maBiMat[namHienTai][thangHienTai]) {
             maHopLe = maBiMat[namHienTai][thangHienTai];
@@ -102,7 +80,7 @@
         }
     }
 
-    // Kiểm tra ngay khi tải trang: Nếu đã đăng nhập trước đó thì mở lớp luôn
+    // Kiểm tra ngay khi tải trang: Nếu đã đăng nhập trước đó thì mở luôn
     if (sessionStorage.getItem("da_dang_nhap") === "true") {
         hienThiLopHoc();
     }
